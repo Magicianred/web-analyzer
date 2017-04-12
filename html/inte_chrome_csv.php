@@ -1,9 +1,23 @@
 <?php
 
 $filePath = './chrome-r.csv';
+$nameId = '';
+if(isset($argv[1])) {
+	$times = $argv[1];
+}
+
+if(isset($argv[2])) {
+	$nameId = $argv[2];
+}
 
 if(file_exists($filePath)) {
     @unlink($filePath);
+}
+
+if($nameId !== '') {
+	$filePath = './chrome-r-'.$nameId.'-'.$times.'.csv';
+} else {
+	$filePath = './chrome-r-'.$times.'.csv';
 }
 
 $fileNames = [
@@ -86,3 +100,5 @@ foreach($fileNames as $value) {
 }
 
 fclose($inteCsv);
+
+copy($filePath, './chrome-r-summary/'.$filePath);

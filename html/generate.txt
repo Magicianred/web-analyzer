@@ -1,0 +1,22 @@
+# e.g. php html.php [none/name/id, web browser name: chrome/firefox/edge/phantomjs]
+php html.php none chrome
+php html.php none firefox
+php html.php name chrome
+php html.php name firefox
+php html.php id chrome
+php html.php id firefox
+
+# visit the http://localhost/web-analyzer/html/evaluate.html
+# php inte_chrome_csv.php [times, name/id/none]
+php inte_chrome_csv.php 1 none
+php inte_chrome_csv.php 1 name
+php inte_chrome_csv.php 1 id
+
+# run the avg_record.php in folder: chrome-r-summary
+# Usage: php avg_record.php [none/name/id, 9/16, ruunning times, browser name: chrome/firefox/edge/phantomjs]
+php avg_record.php none 9 10 chrome
+php avg_record.php id 9 10 firefox
+php avg_record.php name 16 10 edge
+
+# php phantomjs.php [phantomjs executable path, times, name/id/none]
+# e.g. php phantomjs.php C:/phantomjs-2.1.1-windows/bin 1 name

@@ -5,6 +5,15 @@
  * tagName: id, name or empty string
  *
 */
+$xhrAsy = 'xhr.open("POST", "http://localhost/web-analyzer/html/gen_csv.php", true);';
+
+if(isset($argv[2]) && is_string($argv[2])) {
+	if($argv[2] === 'firefox') {
+		$xhrAsy = 'xhr.open("POST", "http://localhost/web-analyzer/html/gen_csv.php", false);';
+	}
+} else {
+	die('missing the arguments two: web browser name (chrome/firefox/edge/phantomjs)');
+}
 
 $base = 2;
 $times = [];
@@ -50,7 +59,8 @@ $html = '<!DOCTYPE html><html><head>
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
 <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-<meta http-equiv="pragma" content="no-cache" />        
+<meta http-equiv="pragma" content="no-cache" />
+<meta charset="utf-8" />      
 <script>
     document.onreadystatechange = function() {
         if(document.readyState === "complete") {
@@ -63,8 +73,8 @@ $html = '<!DOCTYPE html><html><head>
                 }
             };
 
-            xhr.open("POST", "http://localhost/gen_csv.php", true);
-            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            '.$xhrAsy.'
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.send("render_time=" + renderTime + "&file_name=#_THEFILENAME_#");
         }
     }
@@ -96,19 +106,21 @@ if(isset($argv[1])) {
                 '<span #_ID_#>This is text','</span>'
             ],
         ];
-    }
-} else {
-    $tags = [
-        'p' => [
-            '<p>This is text','</p>'
-        ],
-        'div' => [
-            '<div>This is text','</div>'
-        ],
-        'span' => [
-            '<span>This is text','</span>'
-        ],
-    ];
+    } else if($argv[1] === 'none') {
+		$tags = [
+			'p' => [
+				'<p>This is text','</p>'
+			],
+			'div' => [
+				'<div>This is text','</div>'
+			],
+			'span' => [
+				'<span>This is text','</span>'
+			],
+		];
+	} else {
+		die('missing arguments one: please specify the type. The possible value is: id/name/none');
+	}
 }
 
 file_put_contents('measure-0.html', str_replace('#_THEFILENAME_#', 'measure-0.csv', $html).'</body></html>');
@@ -159,7 +171,7 @@ $fileLists[] = './measure-0.html';
 $fileListStr = '';
 
 foreach($fileLists as $value) {
-    $fileListStr .= 'linkList.push("http://localhost/'.$value.'");'.PHP_EOL;
+    $fileListStr .= 'linkList.push("http://localhost/web-analyzer/html/'.$value.'");'.PHP_EOL;
 }
 
 $evalString = '<!DOCTYPE html>
@@ -171,6 +183,7 @@ $evalString = '<!DOCTYPE html>
         <meta http-equiv="expires" content="0" />
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
         <meta http-equiv="pragma" content="no-cache" />
+		<meta charset="utf-8" />
         <script>
             var linkList = [];
             '.$fileListStr.'

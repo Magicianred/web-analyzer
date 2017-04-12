@@ -1,7 +1,7 @@
 #!/bin/bash
 # we assume that you have installed the Win 10.
 
-cd ~/web-analyzer/html
+cd /c/xampp/htdocs/web-analyzer/html
 
 php html.php
 
@@ -19,3 +19,4 @@ cd chrome-r-summary/
 php avg_record.php
 # php avg_record.php name
 # php avg_record.php id
+
